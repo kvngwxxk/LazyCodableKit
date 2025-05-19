@@ -22,6 +22,12 @@ It supports automatic fallback handling and optional decoding for safer and more
 Add the following to your `Package.swift` dependencies:
 
 ```swift
+.package(url: "https://github.com/kvngwxxk/LazyCodableKit.git")
+```
+
+Or, if you want to pin to a version:
+
+```swift
 .package(
     url: "https://github.com/kvngwxxk/LazyCodableKit.git",
     from: "1.0.0"
@@ -32,6 +38,26 @@ Then import it where needed:
 
 ```swift
 import LazyCodableKit
+```
+
+### CocoaPods
+
+Add the following to your `Podfile`:
+
+```ruby
+pod 'LazyCodableKit'
+```
+
+Or specify a version:
+
+```ruby
+pod 'LazyCodableKit', '~> 1.0.0'
+```
+
+Then run:
+
+```bash
+pod install
 ```
 
 ## 🛠️ Usage
