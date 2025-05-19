@@ -3,7 +3,6 @@
 **LazyCodableKit**은 일관되지 않은 서버 응답 값을 유연하게 디코딩할 수 있도록 돕는 `@propertyWrapper` 기반의 라이브러리입니다.  
 디코딩 실패 시 자동으로 fallback 값을 제공하거나, 옵셔널로 처리하여 더욱 안전하고 확장성 있는 모델 파싱을 구현할 수 있습니다.
 
----
 
 ## 🚀 주요 기능
 
@@ -13,7 +12,6 @@
 - 의존성 없는 경량 구조
 - Swift Concurrency와 호환 가능 (옵션)
 
----
 
 ## 📦 설치 방법
 
@@ -34,7 +32,6 @@
 import LazyCodableKit
 ```
 
----
 
 ## 🛠️ 사용법
 
@@ -62,7 +59,6 @@ struct User: Codable {
 }
 ```
 
----
 
 ## 📋 지원 포맷
 
@@ -74,20 +70,17 @@ struct User: Codable {
 | `@PromisedDouble`     | `123.45`, `"123"`, `true` 등                     | `0.0`              |
 | `@PromisedOptional*`  | 위와 동일, 실패 시 `nil` 반환                    | `nil`              |
 
----
 
 ## ✅ 최소 요구사항
 
 - iOS 13 이상
 - macOS 11 이상
 
----
 
 ## 📄 라이선스
 
 LazyCodableKit은 [MIT 라이선스](LICENSE)를 따릅니다.
 
----
 
 ## 🔗 기여하기
 
