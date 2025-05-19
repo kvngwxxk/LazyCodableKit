@@ -1,5 +1,8 @@
 # LazyCodableKit – Swift를 위한 안전하고 유연한 디코딩 도구
 
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fkvngwxxk%2FLazyCodableKit%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/kvngwxxk/LazyCodableKit)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fkvngwxxk%2FLazyCodableKit%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/kvngwxxk/LazyCodableKit)
+
 **LazyCodableKit**은 일관되지 않은 서버 응답 값을 유연하게 디코딩할 수 있도록 돕는 `@propertyWrapper` 기반의 라이브러리입니다.  
 디코딩 실패 시 자동으로 fallback 값을 제공하거나, 옵셔널로 처리하여 더욱 안전하고 확장성 있는 모델 파싱을 구현할 수 있습니다.
 
