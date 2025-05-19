@@ -89,10 +89,10 @@ struct User: Codable {
 
 | 래퍼                  | 지원되는 입력 형식                                | 기본 fallback 값   |
 |-----------------------|--------------------------------------------------|--------------------|
-| `@PromisedInt`        | `Int`, `"123"`, `123.4`, `true` 등               | `0`                |
+| `@PromisedInt`        | `Int`, `"123"`, `123.4`, `true` 등               | `-1`                |
 | `@PromisedBool`       | `true`, `"yes"`, `1`, `"false"` 등               | `false`            |
 | `@PromisedString`     | `"문자열"`, `123`, `true` 등                     | `""`               |
-| `@PromisedDouble`     | `123.45`, `"123"`, `true` 등                     | `0.0`              |
+| `@PromisedDouble`     | `123.45`, `"123"`, `true` 등                     | `-1.0`              |
 | `@PromisedOptional*`  | 위와 동일, 실패 시 `nil` 반환                    | `nil`              |
 
 
