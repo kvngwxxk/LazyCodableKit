@@ -20,11 +20,6 @@ public struct PromisedDouble: Codable {
     public var wrappedValue: Double
     private let fallback: Double
 
-    public init(wrappedValue: Double = 0.0, fallback: Double = 0.0) {
-        self.wrappedValue = wrappedValue
-        self.fallback = fallback
-    }
-
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         var resolved: Double? = nil
