@@ -1,6 +1,6 @@
 # LazyCodableKit – Safe & Flexible Decoding for Swift
 
-📘 [View this page in Korean](./README.KR.md)
+📘 [View this page in Korean](./README_KR.md)
 
 **LazyCodableKit** provides property wrappers that gracefully decode inconsistent server values into valid Swift types.  
 It supports automatic fallback handling and optional decoding for safer and more flexible model parsing.
