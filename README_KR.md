@@ -11,7 +11,7 @@
 - 디코딩 실패 시 기본 fallback 값 자동 적용
 - 옵셔널 래퍼는 디코딩 실패 시 `nil` 반환
 - 의존성 없는 경량 구조
-- Swift Concurrency와 호환 가능 (옵션)
+- Swift Concurrency 기반 코드에서도 안전하게 사용 가능 (async/await 환경 호환).
 
 ---
 

@@ -12,7 +12,7 @@ It supports automatic fallback handling and optional decoding for safer and more
 - Use fallback values when decoding fails
 - Optional variants decode to `nil` on failure
 - Lightweight and dependency-free
-- Full Swift concurrency compatibility (opt-in)
+- Fully compatible with Swift Concurrency – safe to use in async/await-based code
 
 
 ## 📦 Installation
