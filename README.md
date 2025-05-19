@@ -23,7 +23,7 @@ Add the following to your `Package.swift` dependencies:
 
 ```swift
 .package(
-    url: "https://github.com/your-username/LazyCodableKit.git",
+    url: "https://github.com/kvngwxxk/LazyCodableKit.git",
     from: "1.0.0"
 )
 ```
@@ -65,10 +65,10 @@ struct User: Codable {
 
 | Wrapper              | Accepts                                           | Fallback (default) |
 |----------------------|---------------------------------------------------|--------------------|
-| `@PromisedInt`       | `Int`, `"123"`, `123.4`, `true`                   | `0`                |
+| `@PromisedInt`       | `Int`, `"123"`, `123.4`, `true`                   | `-1`                |
 | `@PromisedBool`      | `true`, `"yes"`, `1`, `"false"`                   | `false`            |
 | `@PromisedString`    | `"str"`, `123`, `true`                            | `""`               |
-| `@PromisedDouble`    | `123.45`, `"123"`, `true`                         | `0.0`              |
+| `@PromisedDouble`    | `123.45`, `"123"`, `true`                         | `-1.0`              |
 | `@PromisedOptional*` | Same as above, but returns `nil` on failure       | `nil`              |
 
 
