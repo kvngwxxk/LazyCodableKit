@@ -20,11 +20,6 @@ public struct PromisedString: Codable {
     public var wrappedValue: String
     private let fallback: String
 
-    public init(wrappedValue: String = "", fallback: String = "") {
-        self.wrappedValue = wrappedValue
-        self.fallback = fallback
-    }
-
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         var resolved: String? = nil

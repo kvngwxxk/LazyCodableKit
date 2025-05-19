@@ -20,11 +20,6 @@ public struct PromisedBool: Codable {
     public var wrappedValue: Bool
     private let fallback: Bool
 
-    public init(wrappedValue: Bool = false, fallback: Bool = false) {
-        self.wrappedValue = wrappedValue
-        self.fallback = fallback
-    }
-
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         var resolved: Bool? = nil

@@ -23,7 +23,7 @@ Add the following to your `Package.swift` dependencies:
 
 ```swift
 .package(
-    url: "https://github.com/your-username/LazyCodableKit.git",
+    url: "https://github.com/kvngwxxk/LazyCodableKit.git",
     from: "1.0.0"
 )
 ```

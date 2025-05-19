@@ -14,7 +14,7 @@ import Foundation
 /// If decoding fails, a fallback value will be used instead.
 ///
 /// - Returns: Nothing
-/// - Note: The fallback value defaults to `0.0` if not specified.
+/// - Note: The fallback value defaults to `-1.0` if not specified.
 @propertyWrapper
 public struct PromisedDouble: Codable {
     public var wrappedValue: Double
@@ -49,7 +49,7 @@ public struct PromisedDouble: Codable {
             #endif
         }
 
-        self.fallback = 0.0
+        self.fallback = -1.0
         self.wrappedValue = resolved ?? fallback
 
         if resolved == nil {
