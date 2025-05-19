@@ -3,7 +3,6 @@
 **LazyCodableKit** provides property wrappers that gracefully decode inconsistent server values into valid Swift types.  
 It supports automatic fallback handling and optional decoding for safer and more flexible model parsing.
 
----
 
 ## 🚀 Features
 
@@ -13,7 +12,6 @@ It supports automatic fallback handling and optional decoding for safer and more
 - Lightweight and dependency-free
 - Full Swift concurrency compatibility (opt-in)
 
----
 
 ## 📦 Installation
 
@@ -62,7 +60,6 @@ struct User: Codable {
 }
 ```
 
----
 
 ## 📋 Supported Formats
 
@@ -74,21 +71,17 @@ struct User: Codable {
 | `@PromisedDouble`    | `123.45`, `"123"`, `true`                         | `0.0`              |
 | `@PromisedOptional*` | Same as above, but returns `nil` on failure       | `nil`              |
 
----
 
 ## ✅ Minimum Requirements
 
-- Swift 5.9+
 - iOS 13+
 - macOS 11+
 
----
 
 ## 📄 License
 
 LazyCodableKit is released under the [MIT License](LICENSE).
 
----
 
 ## 🔗 Contribution
 
