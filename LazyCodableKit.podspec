@@ -7,7 +7,7 @@
 
 Pod::Spec.new do |s|
     s.name             = 'LazyCodableKit'
-    s.version          = '1.0.0'
+    s.version          = '1.0.1'
     s.summary          = 'Safe and flexible decoding for Swift using property wrappers.'
     s.description      = <<-DESC
     LazyCodableKit provides property wrappers like @PromisedInt and @PromisedOptionalBool

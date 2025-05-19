@@ -20,8 +20,14 @@
 `Package.swift` 파일의 `dependencies` 항목에 다음을 추가하세요:
 
 ```swift
+.package(url: "https://github.com/kvngwxxk/LazyCodableKit.git")
+```
+
+또는 버전을 고정하려면:
+
+```swift
 .package(
-    url: "https://github.com/your-username/LazyCodableKit.git",
+    url: "https://github.com/kvngwxxk/LazyCodableKit.git",
     from: "1.0.0"
 )
 ```
@@ -32,6 +38,25 @@
 import LazyCodableKit
 ```
 
+### CocoaPods
+
+`Podfile`에 다음 중 하나를 추가하세요:
+
+```ruby
+pod 'LazyCodableKit'
+```
+
+또는 버전을 명시하려면:
+
+```ruby
+pod 'LazyCodableKit', '~> 1.0.0'
+```
+
+그 후 실행:
+
+```bash
+pod install
+```
 
 ## 🛠️ 사용법
 
