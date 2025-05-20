@@ -1,100 +1,111 @@
 # ``LazyCodableKit``
 
-**LazyCodableKit** is a lightweight Swift library designed to make decoding messy or inconsistent JSON responses more resilient.
+**LazyCodableKit** is a lightweight Swift library that provides property wrappers for safely decoding inconsistent, mixed-format, or malformed API data into valid Swift types.
 
-It provides a set of `@propertyWrapper`s that automatically convert misformatted or mis-typed values (like `"123"` → `Int`, `true` → `1`, etc.) into expected Swift types, avoiding crashes and unnecessary decoding logic.
+It supports automatic fallback handling and optional decoding, allowing your models to be both safer and simpler.
+
+---
 
 ## Overview
 
-Many backend APIs do not strictly follow the contract defined in the documentation. A value that should be an `Int` might come as a `String`, a `Bool`, or even `null`. This causes `Codable` to throw decoding errors, often crashing the app or requiring custom decoding for every such field.
+Many backend APIs return unpredictable data types — e.g., an `Int` field comes as a `String`, a `Bool` is sent as `1`, or a field is simply `null`.
 
-LazyCodableKit solves this by wrapping each field with a `@Promised` property wrapper that handles type mismatches gracefully and applies fallback values when needed.
+Normally, this would crash your Swift `Codable` decoding.
 
-## Topics
+**LazyCodableKit** solves this by introducing `@propertyWrapper`s like `@PromisedInt`, `@PromisedBool`, and their optional variants like `@PromisedOptionalInt`, allowing you to decode safely even from garbage responses.
 
-### Property Wrappers
-
-- ``PromisedInt``
-- ``PromisedDouble``
-- ``PromisedBool``
-- ``PromisedString``
-
-### Optional Versions
-
-All wrappers support optional decoding. You can use them like this:
-
-```swift
-struct Model: Decodable {
-    @PromisedInt var requiredInt: Int
-    @PromisedInt? var optionalInt: Int?
-}
-```
+---
 
 ## Usage
 
-### Basic Example
+### Non-Optional Decoding
+
+Use standard wrappers like `@PromisedInt`, `@PromisedBool`, etc., when you want decoding to succeed even with type mismatch, using fallback values.
 
 ```swift
-struct User: Decodable {
-    @PromisedInt var age: Int
-    @PromisedBool var isActive: Bool
-    @PromisedString var name: String
+struct User: Codable {
+    @PromisedInt var age: Int              // "25", 25.0, true → 1, etc.
+    @PromisedBool var isActive: Bool       // "yes", 1, "false", etc.
+    @PromisedString var nickname: String   // 123 → "123"
+    @PromisedDouble var rating: Double     // "4.5" → 4.5
 }
 ```
 
-If the API returns:
+If decoding fails, default fallback values are used instead.
 
-```json
-{
-  "age": "30",
-  "isActive": 1,
-  "name": 1234
+---
+
+### Optional Decoding
+
+Use `@PromisedOptional*` wrappers when decoding should silently return `nil` on failure.
+
+```swift
+struct User: Codable {
+    @PromisedOptionalInt var age: Int?
+    @PromisedOptionalBool var isActive: Bool?
+    @PromisedOptionalString var nickname: String?
+    @PromisedOptionalDouble var rating: Double?
 }
 ```
 
-`LazyCodableKit` will decode this safely as:
+This is useful for optional fields where a failure shouldn't affect decoding of the rest of the model.
 
-- `age` = 30
-- `isActive` = true
-- `name` = "1234"
+---
 
-### Default Fallbacks
+## Supported Formats
 
-If a field fails to decode (e.g., malformed or null), the wrapper provides a reasonable default:
+| Wrapper                 | Accepts                                       | Fallback on Failure |
+|-------------------------|-----------------------------------------------|---------------------|
+| `@PromisedInt`          | `Int`, `"123"`, `123.4`, `true`, `false`      | `-1`                |
+| `@PromisedBool`         | `true`, `false`, `"yes"`, `"no"`, `1`, `0`    | `false`             |
+| `@PromisedString`       | Any value convertible to string               | `""`                |
+| `@PromisedDouble`       | `Double`, `"123.4"`, `true`, `false`          | `-1.0`              |
+| `@PromisedOptional*`    | Same as above                                 | `nil`               |
 
-| Wrapper          | Default Fallback |
-|------------------|------------------|
-| `PromisedInt`    | `-1`             |
-| `PromisedDouble` | `-1.0`           |
-| `PromisedBool`   | `false`          |
-| `PromisedString` | `""`             |
-
-Optional versions will result in `nil` instead.
-
-## Motivation
-
-This library was created out of frustration with constantly defending against bad server data. Instead of writing boilerplate `init(from:)` decoding for each model, `LazyCodableKit` lets you annotate only the fields that are likely to break, or apply it universally across your models for defensive decoding.
+---
 
 ## Installation
 
-You can install LazyCodableKit via Swift Package Manager:
+### Swift Package Manager
 
 ```swift
-dependencies: [
-    .package(url: "https://github.com/kvngwxxk/LazyCodableKit", from: "1.0.2")
-]
+.package(url: "https://github.com/kvngwxxk/LazyCodableKit.git", from: "1.0.0")
 ```
 
-And import in your source file:
+Then import it:
 
 ```swift
 import LazyCodableKit
 ```
 
+### CocoaPods
+
+```ruby
+pod 'LazyCodableKit', '~> 1.0.0'
+```
+
+```bash
+pod install
+```
+
+---
+
+## Requirements
+
+- iOS 13+
+- macOS 11+
+- Swift 5.9+
+
+---
+
 ## License
 
-LazyCodableKit is available under the MIT license.
+LazyCodableKit is released under the MIT License.
+
+---
 
 ## Contributions
 
-Issues, PRs, and feedback are welcome! This project aims to remain lightweight and focused on defensive decoding with no additional dependencies.
+Issues and PRs are welcome.  
+Please feel free to file a bug, suggest a feature, or just say hi.
+
