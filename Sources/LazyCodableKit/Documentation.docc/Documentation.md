@@ -81,7 +81,7 @@ You can install LazyCodableKit via Swift Package Manager:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/yourname/LazyCodableKit", from: "1.0.2")
+    .package(url: "https://github.com/kvngwxxk/LazyCodableKit", from: "1.0.2")
 ]
 ```
 
