@@ -71,8 +71,6 @@ struct User: Codable {
     @PromisedBool var isActive: Bool       // "yes", 1, "false" 등
     @PromisedString var nickname: String   // 123 → "123"
     @PromisedDouble var rating: Double     // "4.5" → 4.5
-
-    @PromisedInt(fallback: -1) var score: Int
 }
 ```
 
