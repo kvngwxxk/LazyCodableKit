@@ -86,6 +86,7 @@ struct User: Codable {
     @PromisedBool var isActive: Bool
     @PromisedString var nickname: String
     @PromisedDouble var rating: Double
+    @PromisedDate var createdAt: Date    
 }
 ```
 
@@ -97,18 +98,90 @@ struct User: Codable {
     @PromisedOptionalBool var isActive: Bool?
     @PromisedOptionalString var nickname: String?
     @PromisedOptionalDouble var rating: Double?
+    @PromisedOptionalDate var createdAt: Date?
 }
 ```
 
 ## 📋 Supported Formats
 
-| Wrapper              | Accepts                                           | Fallback (default) |
-|----------------------|---------------------------------------------------|--------------------|
-| `@PromisedInt`       | `Int`, `"123"`, `123.4`, `true`                   | `-1`               |
-| `@PromisedBool`      | `true`, `"yes"`, `1`, `"false"`                   | `false`            |
-| `@PromisedString`    | `"str"`, `123`, `true`                            | `""`               |
-| `@PromisedDouble`    | `123.45`, `"123"`, `true`                         | `-1.0`             |
-| `@PromisedOptional*` | Same as above, but returns `nil` on failure       | `nil`              |
+| Wrapper              | Accepts                                           | Fallback (default) |      Notes              |
+|----------------------|---------------------------------------------------|--------------------|-------------------------|
+| `@PromisedInt`       | `Int`, `"123"`, `123.4`, `true`                   | `-1`               |                           |
+| `@PromisedBool`      | `true`, `"yes"`, `1`, `"false"`                   | `false`            |                           |
+| `@PromisedString`    | `"str"`, `123`, `true`                            | `""`               |                           |
+| `@PromisedDouble`    | `123.45`, `"123"`, `true`                         | `-1.0`             |                           |
+| `@PromisedDate`        | ISO8601, `"yyyy-MM-dd"`, `"yyyy-MM-dd HH:mm:ss"` | `Date.distantPast`   | Available since 1.1.0  |
+| `@PromisedOptional*` | Same as above, but returns `nil` on failure       | `nil`              |                           |
+
+## 🔍 Quick Example
+
+Here's a full example that uses all Promised property wrappers with nested types and arrays:
+
+```swift
+struct Badge: Codable {
+    @PromisedString var title: String
+    @PromisedOptionalInt var level: Int?
+}
+
+struct Profile: Codable {
+    @PromisedString var bio: String
+    @PromisedOptionalBool var isVerified: Bool?
+    @PromisedOptionalDate var birthday: Date?
+}
+
+struct User: Codable {
+    @PromisedInt var id: Int
+    @PromisedOptionalString var nickname: String?
+    @PromisedBool var isActive: Bool
+    @PromisedDouble var rating: Double
+    @PromisedOptionalDouble var optionalScore: Double?
+    @PromisedDate var createdAt: Date
+
+    var profile: Profile
+    var badges: [Badge]
+}
+
+let json = """
+{
+  "id": "1001",
+  "nickname": 123,
+  "isActive": "yes",
+  "rating": "4.7",
+  "optionalScore": null,
+  "createdAt": "2023-11-20 12:34:56",
+  "profile": {
+    "bio": true,
+    "isVerified": "no",
+    "birthday": "2000-01-01"
+  },
+  "badges": [
+    { "title": 456, "level": "3" },
+    { "title": null, "level": {} }
+  ]
+}
+""".data(using: .utf8)!
+
+LazyCodableLogger.isEnabled = true
+let user = try JSONDecoder().decode(User.self, from: json)
+```
+
+### Console
+```text
+[LazyCodableKit] 📍id: 🔄 String("1001") → Int(1001)
+[LazyCodableKit] 📍nickname: 🔄 Int(123) → String("123")
+[LazyCodableKit] 📍isActive: 🔄 String("yes") → Bool(true)
+[LazyCodableKit] 📍rating: 🔄 String("4.7") → Double(4.7)
+[LazyCodableKit] 📍optionalScore: 🚫 JSON null → nil
+[LazyCodableKit] 📍createdAt: 🔄 String("2023-11-20 12:34:56") → Date(2023-11-20 12:34:56 +0000)
+[LazyCodableKit] 📍profile.bio: 🔄 Bool(true) → String("true")
+[LazyCodableKit] 📍profile.isVerified: 🔄 String("no") → Bool(false)
+[LazyCodableKit] 📍profile.birthday: 🔄 String("2000-01-01") → Date(2000-01-01 00:00:00 +0000)
+[LazyCodableKit] 📍badges.Index 0.title: 🔄 Int(456) → String("456")
+[LazyCodableKit] 📍badges.Index 0.level: 🔄 String("3") → Int(3)
+[LazyCodableKit] 📍badges.Index 1.title: ⚠️ Unknown value → fallback to ""
+[LazyCodableKit] 📍badges.Index 1.level: 🚫 Unknown value → nil
+```
+
 
 ## ✅ Minimum Requirements
 - iOS 13+  
