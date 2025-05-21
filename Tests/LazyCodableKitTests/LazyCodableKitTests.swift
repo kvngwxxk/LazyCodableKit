@@ -9,6 +9,9 @@ struct PromisedIntTests {
             @PromisedInt var value: Int
         }
         
+        LazyCodableLogger.isEnabled = true
+        LazyCodableLogger.logOnSuccess = true
+        
         let jsonInt = #"{"value": 123}"#.data(using: .utf8)!
         let decodedInt = try JSONDecoder().decode(Model.self, from: jsonInt)
         #expect(decodedInt.value == 123)
@@ -28,6 +31,9 @@ struct PromisedStringTests {
         struct Model: Decodable {
             @PromisedString var name: String
         }
+        
+        LazyCodableLogger.isEnabled = true
+        LazyCodableLogger.logOnSuccess = true
         
         let jsonStr = #"{"name": "Alice"}"#.data(using: .utf8)!
         let model1 = try JSONDecoder().decode(Model.self, from: jsonStr)
@@ -57,6 +63,9 @@ struct PromisedBoolTests {
             @PromisedBool var isActive: Bool
         }
         
+        LazyCodableLogger.isEnabled = true
+        LazyCodableLogger.logOnSuccess = true
+        
         #expect(try JSONDecoder().decode(Model.self, from: #"{"isActive": true}"#.data(using: .utf8)!).isActive == true)
         #expect(try JSONDecoder().decode(Model.self, from: #"{"isActive": "true"}"#.data(using: .utf8)!).isActive == true)
         #expect(try JSONDecoder().decode(Model.self, from: #"{"isActive": 1}"#.data(using: .utf8)!).isActive == true)
@@ -79,11 +88,14 @@ struct PromisedDoubleTests {
             @PromisedDouble var price: Double
         }
         
+        LazyCodableLogger.isEnabled = true
+        LazyCodableLogger.logOnSuccess = true
+        
         #expect(try JSONDecoder().decode(Model.self, from: #"{"price": 123}"#.data(using: .utf8)!).price == 123.0)
         #expect(try JSONDecoder().decode(Model.self, from: #"{"price": "456.78"}"#.data(using: .utf8)!).price == 456.78)
         #expect(try JSONDecoder().decode(Model.self, from: #"{"price": true}"#.data(using: .utf8)!).price == 1.0)
         #expect(try JSONDecoder().decode(Model.self, from: #"{"price": false}"#.data(using: .utf8)!).price == 0.0)
-        #expect(try JSONDecoder().decode(Model.self, from: #"{"price": null}"#.data(using: .utf8)!).price == 0.0)
+        #expect(try JSONDecoder().decode(Model.self, from: #"{"price": null}"#.data(using: .utf8)!).price == -1.0)
     }
 }
 
@@ -92,6 +104,9 @@ struct PromisedOptionalIntTests {
         struct Model: Decodable {
             @PromisedOptionalInt var value: Int?
         }
+        
+        LazyCodableLogger.isEnabled = true
+        LazyCodableLogger.logOnSuccess = true
         
         #expect(try JSONDecoder().decode(Model.self, from: #"{"value": 123}"#.data(using: .utf8)!).value == 123)
         #expect(try JSONDecoder().decode(Model.self, from: #"{"value": "456"}"#.data(using: .utf8)!).value == 456)
@@ -106,6 +121,9 @@ struct PromisedOptionalBoolTests {
         struct Model: Decodable {
             @PromisedOptionalBool var flag: Bool?
         }
+        
+        LazyCodableLogger.isEnabled = true
+        LazyCodableLogger.logOnSuccess = true
         
         #expect(try JSONDecoder().decode(Model.self, from: #"{"flag": true}"#.data(using: .utf8)!).flag == true)
         #expect(try JSONDecoder().decode(Model.self, from: #"{"flag": 1}"#.data(using: .utf8)!).flag == true)
@@ -125,6 +143,9 @@ struct PromisedOptionalStringTests {
             @PromisedOptionalString var name: String?
         }
         
+        LazyCodableLogger.isEnabled = true
+        LazyCodableLogger.logOnSuccess = true
+        
         #expect(try JSONDecoder().decode(Model.self, from: #"{"name": "Alice"}"#.data(using: .utf8)!).name == "Alice")
         #expect(try JSONDecoder().decode(Model.self, from: #"{"name": 123}"#.data(using: .utf8)!).name == "123")
         #expect(try JSONDecoder().decode(Model.self, from: #"{"name": 456.78}"#.data(using: .utf8)!).name == "456.78")
@@ -138,6 +159,9 @@ struct PromisedOptionalDoubleTests {
         struct Model: Decodable {
             @PromisedOptionalDouble var amount: Double?
         }
+        
+        LazyCodableLogger.isEnabled = true
+        LazyCodableLogger.logOnSuccess = true
         
         #expect(try JSONDecoder().decode(Model.self, from: #"{"amount": 123.45}"#.data(using: .utf8)!).amount == 123.45)
         #expect(try JSONDecoder().decode(Model.self, from: #"{"amount": 456}"#.data(using: .utf8)!).amount == 456.0)

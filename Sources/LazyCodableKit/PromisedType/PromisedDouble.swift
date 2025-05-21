@@ -18,7 +18,11 @@ import Foundation
 @propertyWrapper
 public struct PromisedDouble: Codable {
     public var wrappedValue: Double
-    private let fallback: Double
+    public static var fallback: Double = -1.0
+
+    public init(wrappedValue: Double) {
+        self.wrappedValue = wrappedValue
+    }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
@@ -26,31 +30,24 @@ public struct PromisedDouble: Codable {
 
         if let double = try? container.decode(Double.self) {
             resolved = double
+            LazyCodableLogger.log("Decoded Double(\(double))", codingPath: decoder.codingPath, type: .success)
         } else if let int = try? container.decode(Int.self) {
             resolved = Double(int)
-            #if DEBUG || DEV
-            print("[PromisedDouble] Int(\(int)) → Double(\(resolved!))")
-            #endif
+            LazyCodableLogger.log("Int(\(int)) → Double(\(resolved!))", codingPath: decoder.codingPath)
         } else if let str = try? container.decode(String.self),
                   let double = Double(str) {
             resolved = double
-            #if DEBUG || DEV
-            print("[PromisedDouble] String(\"\(str)\") → Double(\(double))")
-            #endif
+            LazyCodableLogger.log("String(\"\(str)\") → Double(\(double))", codingPath: decoder.codingPath)
         } else if let bool = try? container.decode(Bool.self) {
             resolved = bool ? 1.0 : 0.0
-            #if DEBUG || DEV
-            print("[PromisedDouble] Bool(\(bool)) → Double(\(resolved!))")
-            #endif
+            LazyCodableLogger.log("Bool(\(bool)) → Double(\(resolved!))", codingPath: decoder.codingPath)
         }
 
-        self.fallback = -1.0
+        let fallback = PromisedDouble.fallback
         self.wrappedValue = resolved ?? fallback
 
         if resolved == nil {
-            #if DEBUG || DEV
-            print("[PromisedDouble] Unknown value → fallback to \(fallback)")
-            #endif
+            LazyCodableLogger.log("Unknown value → fallback to \(fallback)", codingPath: decoder.codingPath, type: .fallback)
         }
     }
 

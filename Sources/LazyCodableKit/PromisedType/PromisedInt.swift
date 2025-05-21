@@ -17,7 +17,11 @@ import Foundation
 @propertyWrapper
 public struct PromisedInt: Codable {
     public var wrappedValue: Int
-    private let fallback: Int
+    public static var fallback: Int = -1
+
+    public init(wrappedValue: Int) {
+        self.wrappedValue = wrappedValue
+    }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
@@ -25,26 +29,24 @@ public struct PromisedInt: Codable {
 
         if let int = try? container.decode(Int.self) {
             resolved = int
+            LazyCodableLogger.log("Decoded Int(\(int))", codingPath: decoder.codingPath, type: .success)
         } else if let str = try? container.decode(String.self),
                   let int = Int(str) {
             resolved = int
-            #if DEBUG || DEV
-            print("[PromisedInt] String(\"\(str)\") → Int(\(int))")
-            #endif
+            LazyCodableLogger.log("String(\"\(str)\") → Int(\(int))", codingPath: decoder.codingPath)
         } else if let double = try? container.decode(Double.self) {
             resolved = Int(double)
-            #if DEBUG || DEV
-            print("[PromisedInt] Double(\(double)) → Int(\(resolved!))")
-            #endif
+            LazyCodableLogger.log("Double(\(double)) → Int(\(resolved!))", codingPath: decoder.codingPath)
+        } else if let bool = try? container.decode(Bool.self) {
+            resolved = bool ? 1 : 0
+            LazyCodableLogger.log("Bool(\(bool)) → Int(\(resolved!))", codingPath: decoder.codingPath)
         }
 
-        self.fallback = -1
-        self.wrappedValue = resolved ?? fallback
+        let fb = PromisedInt.fallback
+        self.wrappedValue = resolved ?? fb
 
         if resolved == nil {
-            #if DEBUG || DEV
-            print("[PromisedInt] Unknown value → fallback to \(fallback)")
-            #endif
+            LazyCodableLogger.log("Unknown value → fallback to \(fb)", codingPath: decoder.codingPath, type: .fallback)
         }
     }
 
