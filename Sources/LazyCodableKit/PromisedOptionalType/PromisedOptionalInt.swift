@@ -18,31 +18,32 @@ import Foundation
 public struct PromisedOptionalInt: Codable {
     public var wrappedValue: Int?
 
-    public init(wrappedValue: Int? = nil) {
+    public init(wrappedValue: Int?) {
         self.wrappedValue = wrappedValue
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
 
-        if let int = try? container.decode(Int.self) {
-            wrappedValue = int
+        if container.decodeNil() {
+            self.wrappedValue = nil
+            LazyCodableLogger.log("JSON null → nil", codingPath: decoder.codingPath, type: .null)
+        } else if let int = try? container.decode(Int.self) {
+            self.wrappedValue = int
+            LazyCodableLogger.log("Decoded Int(\(int))", codingPath: decoder.codingPath, type: .success)
         } else if let str = try? container.decode(String.self),
                   let int = Int(str) {
-            wrappedValue = int
-            #if DEBUG || DEV
-            print("[PromisedOptionalInt] String(\"\(str)\") → Int(\(int))")
-            #endif
+            self.wrappedValue = int
+            LazyCodableLogger.log("String(\"\(str)\") → Int(\(int))", codingPath: decoder.codingPath)
         } else if let double = try? container.decode(Double.self) {
-            wrappedValue = Int(double)
-            #if DEBUG || DEV
-            print("[PromisedOptionalInt] Double(\(double)) → Int(\(wrappedValue!))")
-            #endif
+            self.wrappedValue = Int(double)
+            LazyCodableLogger.log("Double(\(double)) → Int(\(Int(double)))", codingPath: decoder.codingPath)
+        } else if let bool = try? container.decode(Bool.self) {
+            self.wrappedValue = bool ? 1 : 0
+            LazyCodableLogger.log("Bool(\(bool)) → Int(\(bool ? 1 : 0))", codingPath: decoder.codingPath)
         } else {
-            wrappedValue = nil
-            #if DEBUG || DEV
-            print("[PromisedOptionalInt] Unable to decode → value set to nil")
-            #endif
+            self.wrappedValue = nil
+            LazyCodableLogger.log("Unknown value → nil", codingPath: decoder.codingPath, type: .null)
         }
     }
 

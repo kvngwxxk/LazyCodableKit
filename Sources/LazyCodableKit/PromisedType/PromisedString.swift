@@ -18,38 +18,35 @@ import Foundation
 @propertyWrapper
 public struct PromisedString: Codable {
     public var wrappedValue: String
-    private let fallback: String
+    public static var fallback: String = ""
+
+    public init(wrappedValue: String) {
+        self.wrappedValue = wrappedValue
+    }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        var resolved: String? = nil
+        var resolved: String?
 
         if let str = try? container.decode(String.self) {
             resolved = str
+            LazyCodableLogger.log("Decoded String(\(str))", codingPath: decoder.codingPath, type: .success)
         } else if let int = try? container.decode(Int.self) {
             resolved = String(int)
-            #if DEBUG || DEV
-            print("[PromisedString] Int(\(int)) → String(\"\(resolved!)\")")
-            #endif
+            LazyCodableLogger.log("Int(\(int)) → String(\"\(resolved!)\")", codingPath: decoder.codingPath)
         } else if let double = try? container.decode(Double.self) {
             resolved = String(double)
-            #if DEBUG || DEV
-            print("[PromisedString] Double(\(double)) → String(\"\(resolved!)\")")
-            #endif
+            LazyCodableLogger.log("Double(\(double)) → String(\"\(resolved!)\")", codingPath: decoder.codingPath)
         } else if let bool = try? container.decode(Bool.self) {
             resolved = String(bool)
-            #if DEBUG || DEV
-            print("[PromisedString] Bool(\(bool)) → String(\"\(resolved!)\")")
-            #endif
+            LazyCodableLogger.log("Bool(\(bool)) → String(\"\(resolved!)\")", codingPath: decoder.codingPath)
         }
 
-        self.fallback = ""
+        let fallback = PromisedString.fallback
         self.wrappedValue = resolved ?? fallback
 
         if resolved == nil {
-            #if DEBUG || DEV
-            print("[PromisedString] Unknown value → fallback to \"\(fallback)\"")
-            #endif
+            LazyCodableLogger.log("Unknown value → fallback to \"\(fallback)\"", codingPath: decoder.codingPath, type: .fallback)
         }
     }
 

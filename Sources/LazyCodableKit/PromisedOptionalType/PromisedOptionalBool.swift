@@ -18,39 +18,38 @@ import Foundation
 public struct PromisedOptionalBool: Codable {
     public var wrappedValue: Bool?
 
-    public init(wrappedValue: Bool? = nil) {
+    public init(wrappedValue: Bool?) {
         self.wrappedValue = wrappedValue
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        var resolved: Bool? = nil
 
-        if let bool = try? container.decode(Bool.self) {
-            resolved = bool
+        if container.decodeNil() {
+            self.wrappedValue = nil
+            LazyCodableLogger.log("JSON null → nil", codingPath: decoder.codingPath, type: .null)
+        } else if let bool = try? container.decode(Bool.self) {
+            self.wrappedValue = bool
+            LazyCodableLogger.log("Decoded Bool(\(bool))", codingPath: decoder.codingPath, type: .success)
         } else if let int = try? container.decode(Int.self) {
-            resolved = int != 0
-            #if DEBUG || DEV
-            print("[PromisedOptionalBool] Int(\(int)) → Bool(\(resolved!))")
-            #endif
+            self.wrappedValue = int != 0
+            LazyCodableLogger.log("Int(\(int)) → Bool(\(int != 0))", codingPath: decoder.codingPath)
+        } else if let double = try? container.decode(Double.self) {
+            self.wrappedValue = double != 0.0
+            LazyCodableLogger.log("Double(\(double)) → Bool(\(double != 0))", codingPath: decoder.codingPath)
         } else if let str = try? container.decode(String.self) {
             let lowered = str.lowercased()
             if ["true", "1", "yes"].contains(lowered) {
-                resolved = true
+                self.wrappedValue = true
             } else if ["false", "0", "no"].contains(lowered) {
-                resolved = false
+                self.wrappedValue = false
+            } else {
+                self.wrappedValue = nil
             }
-            #if DEBUG || DEV
-            print("[PromisedOptionalBool] String(\"\(str)\") → Bool(\(resolved ?? false))")
-            #endif
-        }
-
-        wrappedValue = resolved
-
-        if resolved == nil {
-            #if DEBUG || DEV
-            print("[PromisedOptionalBool] Unable to decode → value set to nil")
-            #endif
+            LazyCodableLogger.log("String(\"\(str)\") → Bool(\(self.wrappedValue?.description ?? "nil"))", codingPath: decoder.codingPath)
+        } else {
+            self.wrappedValue = nil
+            LazyCodableLogger.log("Unknown value → nil", codingPath: decoder.codingPath, type: .null)
         }
     }
 
