@@ -86,6 +86,7 @@ struct User: Codable {
     @PromisedBool var isActive: Bool
     @PromisedString var nickname: String
     @PromisedDouble var rating: Double
+    @PromisedDate var createdAt: Date    
 }
 ```
 
@@ -97,18 +98,20 @@ struct User: Codable {
     @PromisedOptionalBool var isActive: Bool?
     @PromisedOptionalString var nickname: String?
     @PromisedOptionalDouble var rating: Double?
+    @PromisedOptionalDate var createdAt: Date?
 }
 ```
 
 ## 📋 Supported Formats
 
-| Wrapper              | Accepts                                           | Fallback (default) |
-|----------------------|---------------------------------------------------|--------------------|
-| `@PromisedInt`       | `Int`, `"123"`, `123.4`, `true`                   | `-1`               |
-| `@PromisedBool`      | `true`, `"yes"`, `1`, `"false"`                   | `false`            |
-| `@PromisedString`    | `"str"`, `123`, `true`                            | `""`               |
-| `@PromisedDouble`    | `123.45`, `"123"`, `true`                         | `-1.0`             |
-| `@PromisedOptional*` | Same as above, but returns `nil` on failure       | `nil`              |
+| Wrapper              | Accepts                                           | Fallback (default) |      Notes              |
+|----------------------|---------------------------------------------------|--------------------|-------------------------|
+| `@PromisedInt`       | `Int`, `"123"`, `123.4`, `true`                   | `-1`               |                           |
+| `@PromisedBool`      | `true`, `"yes"`, `1`, `"false"`                   | `false`            |                           |
+| `@PromisedString`    | `"str"`, `123`, `true`                            | `""`               |                           |
+| `@PromisedDouble`    | `123.45`, `"123"`, `true`                         | `-1.0`             |                           |
+| `@PromisedDate`        | ISO8601, `"yyyy-MM-dd"`, `"yyyy-MM-dd HH:mm:ss"` | `Date.distantPast`   | Available since 1.1.0  |
+| `@PromisedOptional*` | Same as above, but returns `nil` on failure       | `nil`              |                           |
 
 ## 🔍 Quick Example
 

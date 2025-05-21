@@ -83,6 +83,7 @@ struct User: Codable {
     @PromisedBool var isActive: Bool
     @PromisedString var nickname: String
     @PromisedDouble var rating: Double
+    @PromisedDate var createdAt: Date    
 }
 ```
 
@@ -94,19 +95,21 @@ struct User: Codable {
     @PromisedOptionalBool var isActive: Bool?
     @PromisedOptionalString var nickname: String?
     @PromisedOptionalDouble var rating: Double?
+    @PromisedOptionalDate var createdAt: Date?
 }
 ```
 
 
 ## 📋 지원 포맷
 
-| 래퍼                  | 허용되는 형식                               | fallback 기본값 |
-|-----------------------|----------------------------------------------|----------------|
-| `@PromisedInt`        | `Int`, `"123"`, `123.4`, `true`              | `-1`           |
-| `@PromisedBool`       | `true`, `"yes"`, `1`, `"false"`              | `false`        |
-| `@PromisedString`     | `"문자열"`, `123`, `true`                    | `""`           |
-| `@PromisedDouble`     | `123.45`, `"123"`, `true`                    | `-1.0`         |
-| `@PromisedOptional*`  | 위와 동일하지만 실패 시 `nil`                | `nil`          |
+| 래퍼                  | 허용되는 형식                               | fallback 기본값 |     비고         |
+|-----------------------|----------------------------------------------|--------------|--------------| 
+| `@PromisedInt`        | `Int`, `"123"`, `123.4`, `true`              | `-1`           |           |
+| `@PromisedBool`       | `true`, `"yes"`, `1`, `"false"`              | `false`        |           |
+| `@PromisedString`     | `"문자열"`, `123`, `true`                    | `""`           |          |
+| `@PromisedDouble`     | `123.45`, `"123"`, `true`                    | `-1.0`         |           |
+| `@PromisedDate`        | ISO8601, `"yyyy-MM-dd"`, `"yyyy-MM-dd HH:mm:ss"` | `Date.distantPast`   |   1.1.0 이상  |
+| `@PromisedOptional*`  | 위와 동일하지만 실패 시 `nil`                | `nil`          |         |
 
 
 ## 🔍 빠른 예제
