@@ -1,8 +1,8 @@
-# ``LazyCodableKit``
+# `LazyCodableKit`
 
 **LazyCodableKit** is a lightweight Swift library that provides property wrappers for safely decoding inconsistent, mixed-format, or malformed API data into valid Swift types.
 
-It supports automatic fallback handling and optional decoding, allowing your models to be both safer and simpler.
+It supports automatic fallback handling, optional decoding, and configurable logging, allowing your models to be both safer and simpler.
 
 ---
 
@@ -49,6 +49,31 @@ struct User: Codable {
 ```
 
 This is useful for optional fields where a failure shouldn't affect decoding of the rest of the model.
+
+---
+
+## Logging
+
+Starting from version 1.1.0, you can enable logging to see how LazyCodableKit handled decoding at runtime.
+
+```swift
+LazyCodableLogger.isEnabled = true
+LazyCodableLogger.logOnSuccess = true // Optional
+LazyCodableLogger.handler = { print($0) }
+```
+
+You'll see logs like:
+
+```text
+[LazyCodableKit] 📍user.age: 🔄 String("25") → Int(25)
+[LazyCodableKit] 📍user.score: ⚠️ Unknown value → fallback to -1
+[LazyCodableKit] 📍user.nickname: 🚫 JSON null → nil
+```
+
+- 🔄 Type conversion
+- ⚠️ Fallback used
+- 🚫 Decoded as `nil`
+- ✅ Success (only if `logOnSuccess` is true)
 
 ---
 
@@ -108,4 +133,3 @@ LazyCodableKit is released under the MIT License.
 
 Issues and PRs are welcome.  
 Please feel free to file a bug, suggest a feature, or just say hi.
-
